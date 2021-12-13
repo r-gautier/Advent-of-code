@@ -11,23 +11,13 @@ type Instruction = {
     distance: number
 }
 
-export function resolve(commands: Array<string>): number {
-    const position = {horizontal: 0, vertical: 0};
+export function resolve(commands: Array<string>, shouldUseAim = false): number {
+    const position = {horizontal: 0, vertical: 0, aim: 0};
 
     commands.forEach((command) => {
-        const {direction, distance} = convertCommandToInstruction(command);
+        const instruction = convertCommandToInstruction(command);
 
-        switch (direction){
-            case Direction.Down:
-                position.vertical += distance;
-                break;
-            case Direction.Up:
-                position.vertical -= distance;
-                break;
-            case Direction.Forward:
-                position.horizontal += distance;
-                break;
-        }
+        shouldUseAim ? executeInstructionWithAim(instruction) : executeInstruction(instruction);
     });
 
     return position.horizontal * position.vertical;
@@ -36,5 +26,34 @@ export function resolve(commands: Array<string>): number {
         const [direction, distance] = command.split(COMMAND_SEPARATOR) as [Direction, string];
 
         return {direction, distance: parseInt(distance)};
+    }
+
+    function executeInstruction(instruction: Instruction): void{
+        switch (instruction.direction){
+            case Direction.Down:
+                position.vertical += instruction.distance;
+                break;
+            case Direction.Up:
+                position.vertical -= instruction.distance;
+                break;
+            case Direction.Forward:
+                position.horizontal += instruction.distance;
+                break;
+        }
+    }
+
+    function executeInstructionWithAim(instruction: Instruction): void {
+        switch (instruction.direction){
+            case Direction.Down:
+                position.aim += instruction.distance;
+                break;
+            case Direction.Up:
+                position.aim -= instruction.distance;
+                break;
+            case Direction.Forward:
+                position.horizontal += instruction.distance;
+                position.vertical += position.aim * instruction.distance;
+                break;
+        }
     }
 }

@@ -11,5 +11,8 @@ const INPUT_PATH = path.join(__dirname, "../../../assets/2021/02/input.txt"); //
 const commands = parseFileToArray(INPUT_PATH);
 console.log("Initialization done.")
 
-const firstResult = resolve(commands);
+const firstResult = resolve(commands, false);
 console.log("First puzzle solution: ", firstResult);
+
+const secondResult = resolve(commands, true);
+console.log("Second puzzle solution: ", secondResult);
