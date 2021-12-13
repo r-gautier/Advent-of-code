@@ -39,6 +39,18 @@ describe("01 - Solve problem", () => {
             expect(result).toBe(1292);
         })
     })
+
+    describe("second puzzle - 3-sized sliding window", () => {
+        const WINDOW_SIZE = 3;
+
+        test("should find right result for example", () => {
+            const depthMeasurements = [607, 618, 618, 617, 647, 716, 769, 792];
+
+            const result = resolve(depthMeasurements, WINDOW_SIZE);
+
+            expect(result).toBe(5);
+        })
+    })
 })
 
 function generateRandomArray(length: number, max: number){

@@ -2,7 +2,7 @@ export function resolve(depthMeasurements: Array<number>, windowSize: number): n
     let depthIncreasedCount = 0;
 
     let previousSum = computeSumOfSlidingWindow(windowSize - 1);
-    for (let index = windowSize; index <= depthMeasurements.length - windowSize; ++index){
+    for (let index = windowSize; index <= depthMeasurements.length; ++index){
         const currentSum = computeSumOfSlidingWindow(index);
 
         if (currentSum > previousSum ){
