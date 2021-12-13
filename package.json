@@ -8,12 +8,15 @@
   "dependencies": {
     "@types/jest": "^27.0.3",
     "jest": "^27.4.3",
+    "prettier": "^2.5.1",
     "ts-jest": "^27.0.7",
     "tsc-alias": "^1.4.2",
     "typescript": "^4.5.2"
   },
   "scripts": {
     "test": "jest",
-    "build:watch": "tsc -w & tsc-alias -w"
+    "build:watch": "tsc -w & tsc-alias -w",
+    "lint:write": "prettier --write .",
+    "lint:check": "prettier --check ."
   }
 }
