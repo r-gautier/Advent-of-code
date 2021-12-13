@@ -1,4 +1,5 @@
 import {
+  assertStringIsBinary,
   BinaryChar,
   convertBinaryToDecimal,
   invertBinary,
@@ -52,18 +53,8 @@ function computeUpBitsCounts(diagnosticReport: Array<string>): Array<number> {
     index: number;
     expectedBinarySize: number;
   }) {
-    assertEveryCharIsBit();
+    assertStringIsBinary(binaryInput);
     assertBinaryInputIsExpectedSized();
-
-    function assertEveryCharIsBit() {
-      [...binaryInput].forEach((char) => {
-        if (char !== BinaryChar.True && char !== BinaryChar.False) {
-          throw new Error(
-            `The program expect to read binary input (chain of 0 and 1). The current input is not binary: ${binaryInput}`
-          );
-        }
-      });
-    }
 
     function assertBinaryInputIsExpectedSized() {
       if (binaryInput.length !== expectedBinarySize) {
