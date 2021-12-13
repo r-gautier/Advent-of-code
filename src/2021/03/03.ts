@@ -1,9 +1,10 @@
-const NUMBER_OF_BITS = 5;
+import {
+  BinaryChar,
+  convertBinaryToDecimal,
+  invertBinary,
+} from "@utils/binary";
 
-enum BinaryChar {
-  True = "1",
-  False = "0",
-}
+const NUMBER_OF_BITS = 5;
 
 export function resolve(diagnosticReport: Array<string>): number {
   const upBitsCounts = computeUpBitsCounts(diagnosticReport);
@@ -84,37 +85,4 @@ function buildMostCommonBits(
   }
 
   return mostCommonBits;
-}
-
-function invertBinary(binary: string) {
-  let invertedBinary = "";
-
-  for (const bit of binary) {
-    switch (bit) {
-      case BinaryChar.True:
-        invertedBinary = invertedBinary.concat(BinaryChar.False);
-        break;
-      case BinaryChar.False:
-        invertedBinary = invertedBinary.concat(BinaryChar.True);
-        break;
-      default:
-        throw new Error(`Char ${bit} is a not bit`);
-    }
-  }
-
-  return invertedBinary;
-}
-
-function convertBinaryToDecimal(binary: string): number {
-  let decimalNumber = 0;
-
-  const n = binary.length - 1;
-  for (let i = 0; i <= n; ++i) {
-    const bit = binary[i];
-    if (bit === BinaryChar.True) {
-      decimalNumber += 2 ** (n - i);
-    }
-  }
-
-  return decimalNumber;
 }
