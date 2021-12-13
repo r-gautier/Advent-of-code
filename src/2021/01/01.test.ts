@@ -10,30 +10,34 @@ describe("01 - Solve problem", () => {
         randomDepthMeasurements = generateRandomArray(50, 1000);
     })
 
-    test("should return result less or equal than n-1", () => {
-        const depthMeasurements = randomDepthMeasurements;
+    describe("first puzzle - no sliding window", () => {
+        const WINDOW_SIZE = 1;
 
-        const result = resolve(depthMeasurements);
+        test("should return result less or equal than n-1", () => {
+            const depthMeasurements = randomDepthMeasurements;
 
-        expect(result).toBeLessThanOrEqual(depthMeasurements.length - 1);
-    })
+            const result = resolve(depthMeasurements, WINDOW_SIZE);
 
-    test("should return 0 for desc sorted array", () => {
-        const depthMeasurements = randomDepthMeasurements.sort((a,b) => (a-b)).reverse();
+            expect(result).toBeLessThanOrEqual(depthMeasurements.length - 1);
+        })
 
-        const result = resolve(depthMeasurements);
+        test("should return 0 for desc sorted array", () => {
+            const depthMeasurements = randomDepthMeasurements.sort((a,b) => (a-b)).reverse();
 
-        expect(result).toBe(0);
-    })
+            const result = resolve(depthMeasurements, WINDOW_SIZE);
 
-    test("should find right result for first puzzle", () => {
-        const INPUT_PATH = path.join(__dirname, "../../../assets/2021/01/input.txt"); // UGLY
-        const stringValues = parseFileToArray(INPUT_PATH);
-        const depthMeasurements = stringValues.map((value) => parseInt(value));
+            expect(result).toBe(0);
+        })
 
-        const result = resolve(depthMeasurements);
+        test("should find right result for first puzzle", () => {
+            const INPUT_PATH = path.join(__dirname, "../../../assets/2021/01/input.txt"); // UGLY
+            const stringValues = parseFileToArray(INPUT_PATH);
+            const depthMeasurements = stringValues.map((value) => parseInt(value));
 
-        expect(result).toBe(1292);
+            const result = resolve(depthMeasurements, WINDOW_SIZE);
+
+            expect(result).toBe(1292);
+        })
     })
 })
 

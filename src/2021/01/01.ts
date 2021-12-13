@@ -1,16 +1,22 @@
-export function resolve(depthMeasurements: Array<number>): number{
+export function resolve(depthMeasurements: Array<number>, windowSize: number): number{
     let depthIncreasedCount = 0;
 
-    let previousDepth = depthMeasurements[0];
-    for (let index = 1; index < depthMeasurements.length; ++index){
-        const currentDepth = depthMeasurements[index];
+    let previousSum = computeSumOfSlidingWindow(windowSize - 1);
+    for (let index = windowSize; index <= depthMeasurements.length - windowSize; ++index){
+        const currentSum = computeSumOfSlidingWindow(index);
 
-        if (currentDepth > previousDepth ){
+        if (currentSum > previousSum ){
             ++depthIncreasedCount;
         }
 
-        previousDepth = currentDepth
+        previousSum = currentSum
     }
 
     return depthIncreasedCount;
+
+    function computeSumOfSlidingWindow(index: number){
+        const slidingWindow = depthMeasurements.slice(index - (windowSize - 1), index + 1);
+
+        return slidingWindow.reduce((partialSum, value) => (partialSum + value), 0);
+    }
 }
