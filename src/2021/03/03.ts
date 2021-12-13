@@ -4,8 +4,6 @@ import {
   invertBinary,
 } from "@utils/binary";
 
-const NUMBER_OF_BITS = 5;
-
 export function resolve(diagnosticReport: Array<string>): number {
   const upBitsCounts = computeUpBitsCounts(diagnosticReport);
 
@@ -24,12 +22,17 @@ export function resolve(diagnosticReport: Array<string>): number {
 }
 
 function computeUpBitsCounts(diagnosticReport: Array<string>): Array<number> {
-  const bitsCounts = new Array(5).fill(0);
+  const binarySize = diagnosticReport[0].length;
+  const bitsCounts = new Array(binarySize).fill(0);
 
   diagnosticReport.forEach((binaryInput, index) => {
-    assertBinaryInputIsValid(binaryInput, index);
+    assertBinaryInputIsValid({
+      binaryInput,
+      index,
+      expectedBinarySize: binarySize,
+    });
 
-    for (let i = 0; i < NUMBER_OF_BITS; ++i) {
+    for (let i = 0; i < binarySize; ++i) {
       const currentBit = binaryInput[i];
 
       if (currentBit === BinaryChar.True) {
@@ -40,7 +43,15 @@ function computeUpBitsCounts(diagnosticReport: Array<string>): Array<number> {
 
   return bitsCounts;
 
-  function assertBinaryInputIsValid(binaryInput: string, index: number) {
+  function assertBinaryInputIsValid({
+    binaryInput,
+    index,
+    expectedBinarySize,
+  }: {
+    binaryInput: string;
+    index: number;
+    expectedBinarySize: number;
+  }) {
     assertEveryCharIsBit();
     assertBinaryInputIsExpectedSized();
 
@@ -55,9 +66,9 @@ function computeUpBitsCounts(diagnosticReport: Array<string>): Array<number> {
     }
 
     function assertBinaryInputIsExpectedSized() {
-      if (binaryInput.length !== NUMBER_OF_BITS) {
+      if (binaryInput.length !== expectedBinarySize) {
         throw new Error(
-          `The program expect to read ${NUMBER_OF_BITS}-bits binary input.` +
+          `The program expect to read ${expectedBinarySize}-bits binary input.` +
             `The current binary input (value: ${binaryInput}, index: ${index}) length is: ${binaryInput.length}`
         );
       }
@@ -71,9 +82,8 @@ function buildMostCommonBits(
 ): string {
   let mostCommonBits = "";
 
-  for (let i = 0; i < NUMBER_OF_BITS; ++i) {
+  for (const singleBitsCount of upBitsCounts) {
     let bit;
-    const singleBitsCount = upBitsCounts[i];
 
     if (singleBitsCount > numberOfBinaries / 2) {
       bit = BinaryChar.True;

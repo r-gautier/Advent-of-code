@@ -28,9 +28,10 @@ describe("03 - Solve problem", () => {
       expect(callback).toThrow();
     });
 
-    test("should throw an error if a binary input is not of the expected size", () => {
-      const sixBitsBinaryInputs = "0101010";
-      const diagnosticReport = [sixBitsBinaryInputs];
+    test("should throw an error if there is two binaries of different size", () => {
+      const sixBitsBinaryInput = "0101010";
+      const fourBitsBinaryInput = "0110";
+      const diagnosticReport = [sixBitsBinaryInput, fourBitsBinaryInput];
 
       const callback = () => resolve(diagnosticReport);
 
