@@ -76,7 +76,7 @@ function buildMostCommonBits(
   for (const singleBitsCount of upBitsCounts) {
     let bit;
 
-    if (singleBitsCount > numberOfBinaries / 2) {
+    if (singleBitsCount >= numberOfBinaries / 2) {
       bit = BinaryChar.True;
     } else {
       bit = BinaryChar.False;
