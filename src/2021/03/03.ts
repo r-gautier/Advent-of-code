@@ -6,6 +6,18 @@ import {
 } from "@utils/binary";
 
 export function resolve(diagnosticReport: Array<string>): number {
+  const {
+    mostCommonBits: gammaRateBinary,
+    leastCommonBits: epsilonRateBinary,
+  } = computeMostAndLeastCommonBits(diagnosticReport);
+
+  return (
+    convertBinaryToDecimal(gammaRateBinary) *
+    convertBinaryToDecimal(epsilonRateBinary)
+  );
+}
+
+function computeMostAndLeastCommonBits(diagnosticReport: Array<string>) {
   const upBitsCounts = computeUpBitsCounts(diagnosticReport);
 
   const mostCommonBits = buildMostCommonBits(
@@ -13,13 +25,10 @@ export function resolve(diagnosticReport: Array<string>): number {
     diagnosticReport.length
   );
 
-  const gammaRateBinary = mostCommonBits;
-  const epsilonRateBinary = invertBinary(mostCommonBits);
-
-  return (
-    convertBinaryToDecimal(gammaRateBinary) *
-    convertBinaryToDecimal(epsilonRateBinary)
-  );
+  return {
+    mostCommonBits: mostCommonBits,
+    leastCommonBits: invertBinary(mostCommonBits),
+  };
 }
 
 function computeUpBitsCounts(diagnosticReport: Array<string>): Array<number> {
