@@ -1,6 +1,6 @@
 const path = require("path");
 import { parseFileToArray } from "@utils/parseFileToArray";
-import { resolve } from "./03";
+import { resolve, resolveAdvanced } from "./03";
 
 console.log("03 December 2021");
 console.log("-----");
@@ -13,3 +13,6 @@ console.log("Initialization done.");
 
 const firstResult = resolve(diagnosticReport);
 console.log("First puzzle solution: ", firstResult);
+
+const secondResult = resolveAdvanced(diagnosticReport);
+console.log("Second puzzle solution: ", secondResult);
