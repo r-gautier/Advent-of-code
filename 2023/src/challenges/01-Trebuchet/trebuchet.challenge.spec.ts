@@ -54,4 +54,22 @@ describe('TrebuchetChallenge', () => {
       },
     );
   });
+
+  describe('when the document has more than one line', () => {
+    it.each([
+      { document: ['a1', 'b2'], expected: 1 * 2 + 2 * 2 },
+      { document: ['a1bsd2', 'bzdz2aa3z'], expected: 1 + 2 + (2 + 3) },
+      {
+        document: ['bd', 'bd1dzd', 'b2dze3', 'b1dzdd3dzdz5'],
+        expected: 0 + 1 * 2 + (2 + 3) + (1 + 5),
+      },
+    ])(
+      'should return the sum of each line result (document $document)',
+      ({ document, expected }: { document: string[]; expected: number }) => {
+        const result = service.solve(document);
+
+        expect(result).toEqual(expected);
+      },
+    );
+  });
 });

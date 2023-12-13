@@ -4,15 +4,11 @@ import { reverseString } from 'src/common/utils/reverseString';
 @Injectable()
 export class TrebuchetChallenge {
   public solve(document: string[]): number {
-    if (document.length === 0) {
-      return 0;
-    }
-
-    const line = document[0];
-
-    const firstDigit = this.findFirstDigit(line);
-    const lastDigit = this.findLastDigit(line);
-    return (firstDigit || 0) + (lastDigit || 0);
+    return document.reduce((result, line) => {
+      const firstDigit = this.findFirstDigit(line);
+      const lastDigit = this.findLastDigit(line);
+      return result + (firstDigit || 0) + (lastDigit || 0);
+    }, 0);
   }
 
   private findLastDigit(line: string): number | undefined {
