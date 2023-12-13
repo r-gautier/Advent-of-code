@@ -1,4 +1,4 @@
-import { Command, Positional } from 'nestjs-command';
+import { Command, Positional, Option } from 'nestjs-command';
 import {
   FILE_READER_TOKEN,
   FileReader,
@@ -23,13 +23,28 @@ export class SolveChallengeCommand {
       type: 'number',
     })
     challengeNumber: number,
+    @Option({
+      name: 'advanced',
+      describe: 'solve advanced challenge',
+      type: 'boolean',
+      alias: 'a',
+      default: false,
+    })
+    isAdvanced: boolean,
   ) {
     const fileContent = await this.fileReader.read(
       this.buildChallengePath(challengeNumber),
     );
 
-    const result = this.challengeFacade.solve(challengeNumber, fileContent);
-    Logger.log(`Challenge n°${challengeNumber} result: ${result}`);
+    const result = this.challengeFacade.solve(
+      { number: challengeNumber, isAdvanced },
+      fileContent,
+    );
+    Logger.log(
+      `Challenge n°${challengeNumber} ${
+        isAdvanced ? 'advanced*' : ''
+      } result: ${result}`,
+    );
     return result;
   }
 

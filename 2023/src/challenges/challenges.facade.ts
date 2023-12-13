@@ -9,11 +9,16 @@ export class ChallengesFacade {
     private readonly singleColumnParser: SingleColumnParser,
   ) {}
 
-  public solve(number: number, content: string): unknown {
+  public solve(
+    { number, isAdvanced }: { number: number; isAdvanced: boolean },
+    content: string,
+  ): unknown {
     switch (number) {
       case 1:
         const parsedContent = this.singleColumnParser.parse(content);
-        return this.trebuchetService.solve(parsedContent);
+        return isAdvanced
+          ? this.trebuchetService.solveAdvanced(parsedContent)
+          : this.trebuchetService.solve(parsedContent);
       default:
         throw new Error('Challenge not implemented');
     }
