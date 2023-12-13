@@ -47,31 +47,31 @@ export class TrebuchetChallenge {
   }
 
   private findFirstRealDigit(line: string): number | undefined {
-    const digitRegex = new RegExp(
-      `(${DIGIT_REGEX_PATTERN}|${SPELLED_DIGIT_REGEX_PATTERN})`,
-      'g',
-    );
-    const match = line.match(digitRegex);
+    const digits = this.findDigits(line);
 
-    if (match === null) {
+    if (digits === null) {
       return undefined;
     }
 
-    return this.convertStringDigitToNumber(match[0]);
+    return this.convertStringDigitToNumber(digits[0]);
   }
 
   private findLastRealDigit(line: string): number | undefined {
+    const digits = this.findDigits(line);
+
+    if (digits === null) {
+      return undefined;
+    }
+
+    return this.convertStringDigitToNumber(digits[digits.length - 1]);
+  }
+
+  private findDigits(line: string): string[] | null {
     const digitRegex = new RegExp(
       `(${DIGIT_REGEX_PATTERN}|${SPELLED_DIGIT_REGEX_PATTERN})`,
       'g',
     );
-    const match = line.match(digitRegex);
-
-    if (match === null) {
-      return undefined;
-    }
-
-    return this.convertStringDigitToNumber(match[match.length - 1]);
+    return line.match(digitRegex);
   }
 
   private convertStringDigitToNumber(digit: string): number {
