@@ -80,4 +80,12 @@ describe('TrebuchetChallenge', () => {
       },
     );
   });
+
+  it("should solve the challenge's input", () => {
+    const document = ['1abc2', 'pqr3stu8vwx', 'a1b2c3d4e5f', 'treb7uchet'];
+
+    const result = service.solve(document);
+
+    expect(result).toEqual(77);
+  });
 });
