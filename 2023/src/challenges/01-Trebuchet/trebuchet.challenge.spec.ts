@@ -126,10 +126,39 @@ describe('TrebuchetChallenge', () => {
       );
 
       it.each([
+        { line: 'two', expected: 22 },
+        { line: 'abone', expected: 11 },
+        { line: 'dzdthreefff', expected: 33 },
+      ])(
+        'should return twice the digit converted if the the line has only one spelled digit (line $line)',
+        ({ line, expected }) => {
+          const document = [line];
+
+          const result = service.solveAdvanced(document);
+
+          expect(result).toEqual(expected);
+        },
+      );
+
+      it.each([
         { line: 'a1b2', expected: 12 },
         { line: 'dea3dv2', expected: 32 },
       ])(
         'should return the two digits if the line has two digits (line $line)',
+        ({ line, expected }) => {
+          const document = [line];
+
+          const result = service.solveAdvanced(document);
+
+          expect(result).toEqual(expected);
+        },
+      );
+
+      it.each([
+        { line: 'aonebtwo', expected: 12 },
+        { line: 'deathreedvtwo', expected: 32 },
+      ])(
+        'should return the first and last digit converted if the line has two spelled digits (line $line)',
         ({ line, expected }) => {
           const document = [line];
 
@@ -146,6 +175,22 @@ describe('TrebuchetChallenge', () => {
 
         expect(result).toEqual(13);
       });
+
+      it('should return the first and last digit converted if the line has more than two spelled digits', () => {
+        const document = ['aonebtwocthree'];
+
+        const result = service.solveAdvanced(document);
+
+        expect(result).toEqual(13);
+      });
+
+      it('should handle mixed digits and spelled digits', () => {
+        const document = ['a1b2cthree'];
+
+        const result = service.solveAdvanced(document);
+
+        expect(result).toEqual(13);
+      });
     });
 
     describe('when the document has more than one line', () => {
@@ -156,6 +201,10 @@ describe('TrebuchetChallenge', () => {
           document: ['bd', 'bd1dzd', 'b2dze3', 'b1dzdd3dzdz5'],
           expected: 0 + 11 + 23 + 15,
         },
+        {
+          document: ['bd', 'bdonedzd', 'bd1dzd', 'a1b2cthree'],
+          expected: 0 + 11 + 11 + 13,
+        },
       ])(
         'should return the sum of each line result (document $document)',
         ({ document, expected }: { document: string[]; expected: number }) => {
@@ -164,6 +213,22 @@ describe('TrebuchetChallenge', () => {
           expect(result).toEqual(expected);
         },
       );
+    });
+
+    it("should solve the challenge's input", () => {
+      const document = [
+        'two1nine',
+        'eightwothree',
+        'abcone2threexyz',
+        'xtwone3four',
+        '4nineeightseven2',
+        'zoneight234',
+        '7pqrstsixteen',
+      ];
+
+      const result = service.solveAdvanced(document);
+
+      expect(result).toEqual(281);
     });
   });
 });
