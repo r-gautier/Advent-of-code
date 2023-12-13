@@ -7,7 +7,7 @@ export class TrebuchetChallenge {
     return document.reduce((result, line) => {
       const firstDigit = this.findFirstDigit(line);
       const lastDigit = this.findLastDigit(line);
-      return result + (firstDigit || 0) + (lastDigit || 0);
+      return result + (firstDigit || 0) * 10 + (lastDigit || 0);
     }, 0);
   }
 
