@@ -49,7 +49,7 @@ export class TrebuchetChallenge {
   private findFirstRealDigit(line: string): number | undefined {
     const digits = this.findDigits(line);
 
-    if (digits === null) {
+    if (digits.length === 0) {
       return undefined;
     }
 
@@ -59,19 +59,23 @@ export class TrebuchetChallenge {
   private findLastRealDigit(line: string): number | undefined {
     const digits = this.findDigits(line);
 
-    if (digits === null) {
+    if (digits.length === 0) {
       return undefined;
     }
 
     return this.convertStringDigitToNumber(digits[digits.length - 1]);
   }
 
-  private findDigits(line: string): string[] | null {
+  private findDigits(line: string): string[] {
     const digitRegex = new RegExp(
-      `(${DIGIT_REGEX_PATTERN}|${SPELLED_DIGIT_REGEX_PATTERN})`,
+      `(?=(${DIGIT_REGEX_PATTERN}|${SPELLED_DIGIT_REGEX_PATTERN}))`,
       'g',
     );
-    return line.match(digitRegex);
+    const matches = line.matchAll(digitRegex);
+
+    return [...matches]
+      .filter((match) => match[1] !== undefined)
+      .flatMap((match) => match[1]);
   }
 
   private convertStringDigitToNumber(digit: string): number {

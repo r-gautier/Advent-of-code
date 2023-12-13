@@ -191,6 +191,14 @@ describe('TrebuchetChallenge', () => {
 
         expect(result).toEqual(13);
       });
+
+      it('should handle overlapped spelled digits', () => {
+        const document = ['eighthree'];
+
+        const result = service.solveAdvanced(document);
+
+        expect(result).toEqual(83);
+      });
     });
 
     describe('when the document has more than one line', () => {
