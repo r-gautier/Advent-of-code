@@ -53,6 +53,14 @@ describe('TrebuchetChallenge', () => {
         expect(result).toEqual(expected);
       },
     );
+
+    it('should return the sum of the first and last digit if the line has more than two digits', () => {
+      const document = ['a1b2c3'];
+
+      const result = service.solve(document);
+
+      expect(result).toEqual(1 + 3);
+    });
   });
 
   describe('when the document has more than one line', () => {
