@@ -21,4 +21,12 @@ export class TrebuchetChallenge {
     const index = line.search(digitRegex);
     return index >= 0 ? parseInt(line[index]) : undefined;
   }
+
+  public solveAdvanced(document: string[]): number {
+    return document.reduce((result, line) => {
+      const firstDigit = this.findFirstDigit(line);
+      const lastDigit = this.findLastDigit(line);
+      return result + (firstDigit || 0) * 10 + (lastDigit || 0);
+    }, 0);
+  }
 }
