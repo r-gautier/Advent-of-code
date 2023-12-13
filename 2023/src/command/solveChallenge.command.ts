@@ -4,10 +4,12 @@ import {
   FileReader,
 } from '../common/fileReader/fileReader.interface';
 import { Inject, Logger } from '@nestjs/common';
+import { ChallengesFacade } from 'src/challenges/challenges.facade';
 
 export class SolveChallengeCommand {
   constructor(
     @Inject(FILE_READER_TOKEN) private readonly fileReader: FileReader,
+    private readonly challengeFacade: ChallengesFacade,
   ) {}
 
   @Command({
@@ -25,8 +27,10 @@ export class SolveChallengeCommand {
     const fileContent = await this.fileReader.read(
       this.buildChallengePath(challengeNumber),
     );
-    Logger.log(`Challenge ${challengeNumber} has ${fileContent.length} lines`);
-    return fileContent.length;
+
+    const result = this.challengeFacade.solve(challengeNumber, fileContent);
+    Logger.log(`Challenge n°${challengeNumber} result: ${result}`);
+    return result;
   }
 
   private buildChallengePath(challengeNumber: number): string {
