@@ -33,7 +33,19 @@ export class CubeConundrumChallenge implements Challenge<Game[], number> {
       return 0;
     }
 
-    const playsTotal = singleGame.plays.reduce(
+    return this.isValidGame(singleGame) ? 1 : 0;
+  }
+
+  private isValidGame(game: Game): boolean {
+    const total = this.computePlayTotal(game.plays);
+
+    return Object.values(CubeColor).some(
+      (color) => total[color] > CUBE_LIMITS[color],
+    );
+  }
+
+  private computePlayTotal(plays: Game['plays']): BagPick {
+    return plays.reduce(
       (total, singlePlay) => {
         Object.values(CubeColor).forEach((color) => {
           total[color] += singlePlay[color];
@@ -46,12 +58,6 @@ export class CubeConundrumChallenge implements Challenge<Game[], number> {
         [CubeColor.Blue]: 0,
       },
     );
-
-    return Object.values(CubeColor).some(
-      (color) => playsTotal[color] > CUBE_LIMITS[color],
-    )
-      ? 1
-      : 0;
   }
 
   public solveAdvanced(games: Game[]): number {
