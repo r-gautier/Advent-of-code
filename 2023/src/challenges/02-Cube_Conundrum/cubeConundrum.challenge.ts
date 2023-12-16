@@ -24,7 +24,7 @@ const CUBE_LIMITS: Record<CubeColor, number> = {
 export class CubeConundrumChallenge implements Challenge<Game[], number> {
   public solve(games: Game[]): number {
     return games.reduce((result, game) => {
-      const gameContribution = this.isValidGame(game) ? 0 : game.id;
+      const gameContribution = this.isValidGame(game) ? game.id : 0;
       return result + gameContribution;
     }, 0);
   }
