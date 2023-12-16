@@ -27,7 +27,7 @@ describe('CubeConundrumChallenge', () => {
 
     describe('when the game has only one play', () => {
       it('should return 0 for a game with no plays', () => {
-        const game = buildGameWithPlays([]);
+        const game = buildSingleGameWithPlay([]);
 
         const result = cubeConundrumChallenge.solve([game]);
 
@@ -43,7 +43,7 @@ describe('CubeConundrumChallenge', () => {
           'should return 1 if the play has color $color exceeding the limit',
           ({ color, n }) => {
             const play = buildSingleColorPlay(color, n);
-            const game = buildGameWithPlays([play]);
+            const game = buildSingleGameWithPlay([play]);
 
             const result = cubeConundrumChallenge.solve([game]);
 
@@ -59,7 +59,7 @@ describe('CubeConundrumChallenge', () => {
           'should return 0 if the play has color $color not exceeding the limit',
           ({ color, n }) => {
             const play = buildSingleColorPlay(color, n);
-            const game = buildGameWithPlays([play]);
+            const game = buildSingleGameWithPlay([play]);
 
             const result = cubeConundrumChallenge.solve([game]);
 
@@ -90,7 +90,7 @@ describe('CubeConundrumChallenge', () => {
           'should return 1 if the play has the color $color exceeding the limit',
           ({ color, n }) => {
             const play = buildPlayWithFilledColors({ [color]: n });
-            const game = buildGameWithPlays([play]);
+            const game = buildSingleGameWithPlay([play]);
 
             const result = cubeConundrumChallenge.solve([game]);
 
@@ -100,7 +100,7 @@ describe('CubeConundrumChallenge', () => {
 
         it("should return 0 if the play doesn't exceed the limit", () => {
           const play = buildPlayWithFilledColors();
-          const game = buildGameWithPlays([play]);
+          const game = buildSingleGameWithPlay([play]);
 
           const result = cubeConundrumChallenge.solve([game]);
 
@@ -135,40 +135,7 @@ describe('CubeConundrumChallenge', () => {
       ])(
         'should return 1 if one of the play of a color $color exceeds the limit',
         ({ plays }) => {
-          const game = buildGameWithPlays(plays);
-
-          const result = cubeConundrumChallenge.solve([game]);
-
-          expect(result).toEqual(1);
-        },
-      );
-
-      it.each([
-        {
-          color: CubeColor.Red,
-          plays: [
-            buildPlay({ [CubeColor.Red]: 7 }),
-            buildPlay({ [CubeColor.Red]: 9 }),
-          ],
-        },
-        {
-          color: CubeColor.Blue,
-          plays: [
-            buildPlay({ [CubeColor.Blue]: 7 }),
-            buildPlay({ [CubeColor.Blue]: 9 }),
-          ],
-        },
-        {
-          color: CubeColor.Green,
-          plays: [
-            buildPlay({ [CubeColor.Green]: 7 }),
-            buildPlay({ [CubeColor.Green]: 9 }),
-          ],
-        },
-      ])(
-        'should return 1 if the sum of a color $color exceeds the limit',
-        ({ plays }) => {
-          const game = buildGameWithPlays(plays);
+          const game = buildSingleGameWithPlay(plays);
 
           const result = cubeConundrumChallenge.solve([game]);
 
@@ -177,8 +144,37 @@ describe('CubeConundrumChallenge', () => {
       );
     });
 
-    function buildGameWithPlays(plays: Game['plays']) {
-      return { id: 1, plays };
+    describe('when the game has more than one game', () => {
+      it('should return the sum of impossible game id', () => {
+        const games = [
+          buildGame({ id: 1, plays: [buildImpossiblePlay(CubeColor.Red)] }),
+          buildGame({ id: 2, plays: [buildPlay({ [CubeColor.Blue]: 10 })] }),
+          buildGame({ id: 3, plays: [buildImpossiblePlay(CubeColor.Green)] }),
+        ];
+
+        const result = cubeConundrumChallenge.solve(games);
+
+        expect(result).toEqual(1 + 3);
+      });
+    });
+
+    function buildImpossiblePlay(color: CubeColor) {
+      return buildPlay({
+        [color]:
+          Math.max(RED_CUBE_LIMIT, GREEN_CUBE_LIMIT, BLUE_CUBE_LIMIT) + 1,
+      });
+    }
+
+    function buildSingleGameWithPlay(plays: Game['plays']) {
+      return buildGame({ plays });
+    }
+
+    function buildGame(props: Partial<Game> = {}): Game {
+      return {
+        id: 1,
+        plays: [],
+        ...props,
+      };
     }
   });
 });

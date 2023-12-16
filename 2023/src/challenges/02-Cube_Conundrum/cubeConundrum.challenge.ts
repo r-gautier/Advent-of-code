@@ -23,40 +23,19 @@ const CUBE_LIMITS: Record<CubeColor, number> = {
 @Injectable()
 export class CubeConundrumChallenge implements Challenge<Game[], number> {
   public solve(games: Game[]): number {
-    if (games.length === 0) {
-      return 0;
-    }
-
-    const singleGame = games[0];
-
-    if (singleGame.plays.length === 0) {
-      return 0;
-    }
-
-    return this.isValidGame(singleGame) ? 1 : 0;
+    return games.reduce((result, game) => {
+      const gameContribution = this.isValidGame(game) ? 0 : game.id;
+      return result + gameContribution;
+    }, 0);
   }
 
   private isValidGame(game: Game): boolean {
-    const total = this.computePlayTotal(game.plays);
-
-    return Object.values(CubeColor).some(
-      (color) => total[color] > CUBE_LIMITS[color],
-    );
+    return game.plays.every((play) => this.isValidPlay(play));
   }
 
-  private computePlayTotal(plays: Game['plays']): BagPick {
-    return plays.reduce(
-      (total, singlePlay) => {
-        Object.values(CubeColor).forEach((color) => {
-          total[color] += singlePlay[color];
-        });
-        return total;
-      },
-      {
-        [CubeColor.Red]: 0,
-        [CubeColor.Green]: 0,
-        [CubeColor.Blue]: 0,
-      },
+  private isValidPlay(play: BagPick): boolean {
+    return Object.values(CubeColor).every(
+      (color) => play[color] <= CUBE_LIMITS[color],
     );
   }
 
