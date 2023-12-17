@@ -40,6 +40,27 @@ export class CubeConundrumChallenge implements Challenge<Game[], number> {
   }
 
   public solveAdvanced(games: Game[]): number {
-    throw new Error('Method not implemented.');
+    return games.reduce((result, game) => {
+      const minimumSets = this.computeMinimumSets(game.plays);
+
+      const contribution = Object.keys(minimumSets).reduce((power, color) => {
+        return power * minimumSets[color];
+      }, 1);
+      return result + contribution;
+    }, 0);
+  }
+
+  private computeMinimumSets(plays: Array<BagPick>): BagPick {
+    return plays.reduce(
+      (minimumSets, play) => {
+        return Object.values(CubeColor).reduce((colorMinimumSets, color) => {
+          return {
+            ...colorMinimumSets,
+            [color]: Math.max(colorMinimumSets[color], play[color]),
+          };
+        }, minimumSets);
+      },
+      { [CubeColor.Red]: 0, [CubeColor.Green]: 0, [CubeColor.Blue]: 0 },
+    );
   }
 }

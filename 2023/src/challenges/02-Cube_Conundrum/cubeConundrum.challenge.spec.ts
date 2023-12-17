@@ -177,6 +177,16 @@ describe('CubeConundrumChallenge', () => {
       return buildGame({ plays });
     }
   });
+
+  describe('advanced problem', () => {
+    it('should solve the challenge example', () => {
+      const games = buildAdvancedProblemExample();
+
+      const result = cubeConundrumChallenge.solveAdvanced(games);
+
+      expect(result).toEqual(2286);
+    });
+  });
 });
 
 function buildBasicProblemExample(): Game[] {
@@ -226,6 +236,99 @@ function buildBasicProblemExample(): Game[] {
         buildPlay({
           [CubeColor.Green]: 5,
           [CubeColor.Red]: 2,
+        }),
+      ],
+    }),
+    buildGame({
+      id: 4,
+      plays: [
+        buildPlay({
+          [CubeColor.Green]: 1,
+          [CubeColor.Red]: 3,
+          [CubeColor.Blue]: 6,
+        }),
+        buildPlay({
+          [CubeColor.Green]: 3,
+          [CubeColor.Red]: 6,
+        }),
+        buildPlay({
+          [CubeColor.Green]: 3,
+          [CubeColor.Blue]: 15,
+          [CubeColor.Red]: 14,
+        }),
+      ],
+    }),
+    buildGame({
+      id: 5,
+      plays: [
+        buildPlay({
+          [CubeColor.Red]: 6,
+          [CubeColor.Blue]: 1,
+          [CubeColor.Green]: 3,
+        }),
+        buildPlay({
+          [CubeColor.Blue]: 2,
+          [CubeColor.Red]: 1,
+          [CubeColor.Green]: 2,
+        }),
+      ],
+    }),
+  ];
+}
+
+function buildAdvancedProblemExample(): Game[] {
+  return [
+    buildGame({
+      id: 1,
+      plays: [
+        buildPlay({
+          [CubeColor.Blue]: 3,
+          [CubeColor.Red]: 4,
+        }),
+        buildPlay({
+          [CubeColor.Red]: 1,
+          [CubeColor.Green]: 2,
+          [CubeColor.Blue]: 6,
+        }),
+        buildPlay({
+          [CubeColor.Green]: 2,
+        }),
+      ],
+    }),
+    buildGame({
+      id: 2,
+      plays: [
+        buildPlay({
+          [CubeColor.Blue]: 1,
+          [CubeColor.Green]: 2,
+        }),
+        buildPlay({
+          [CubeColor.Green]: 3,
+          [CubeColor.Blue]: 4,
+          [CubeColor.Red]: 1,
+        }),
+        buildPlay({
+          [CubeColor.Green]: 1,
+          [CubeColor.Blue]: 1,
+        }),
+      ],
+    }),
+    buildGame({
+      id: 3,
+      plays: [
+        buildPlay({
+          [CubeColor.Green]: 8,
+          [CubeColor.Blue]: 6,
+          [CubeColor.Red]: 20,
+        }),
+        buildPlay({
+          [CubeColor.Blue]: 5,
+          [CubeColor.Red]: 4,
+          [CubeColor.Green]: 13,
+        }),
+        buildPlay({
+          [CubeColor.Green]: 5,
+          [CubeColor.Red]: 1,
         }),
       ],
     }),
