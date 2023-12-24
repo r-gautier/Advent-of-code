@@ -5,6 +5,7 @@ import { CubeConundrumChallenge } from './02-Cube_Conundrum/cubeConundrum.challe
 import { CubeConundrumParser } from './02-Cube_Conundrum/cubeConundrum.parser';
 import { GearRatiosChallenge } from './03-Gear_Ratios/gearRatios.challenge';
 import { GearRatiosParser } from './03-Gear_Ratios/gearRatios.parser';
+import { ScratchCardsChallenge } from './04-Scratchcards/scratchCards.challenge';
 
 @Module({
   providers: [
@@ -13,6 +14,7 @@ import { GearRatiosParser } from './03-Gear_Ratios/gearRatios.parser';
     CubeConundrumParser,
     GearRatiosChallenge,
     GearRatiosParser,
+    ScratchCardsChallenge,
     ChallengesFacade,
   ],
   exports: [ChallengesFacade],

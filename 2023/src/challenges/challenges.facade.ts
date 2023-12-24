@@ -7,6 +7,7 @@ import { CubeConundrumChallenge } from './02-Cube_Conundrum/cubeConundrum.challe
 import { CubeConundrumParser } from './02-Cube_Conundrum/cubeConundrum.parser';
 import { Challenge } from './common/services/challenge.abstract';
 import { GearRatiosChallenge } from './03-Gear_Ratios/gearRatios.challenge';
+import { ScratchCardsChallenge } from './04-Scratchcards/scratchCards.challenge';
 
 export type ChallengeDependency<T> = {
   challenge: DeprecatedChallenge<T, unknown>;
@@ -21,6 +22,7 @@ export class ChallengesFacade {
     private readonly cubeConundrumService: CubeConundrumChallenge,
     private readonly cubeConundrumParser: CubeConundrumParser,
     private readonly gearRatiosChallenge: GearRatiosChallenge,
+    private readonly scratchCardsChallenge: ScratchCardsChallenge,
   ) {}
 
   public solve(
@@ -41,6 +43,8 @@ export class ChallengesFacade {
     switch (number) {
       case 3:
         return this.gearRatiosChallenge;
+      case 4:
+        return this.scratchCardsChallenge;
       default:
         throw new Error('Challenge not implemented');
     }
