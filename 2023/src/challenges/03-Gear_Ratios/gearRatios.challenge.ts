@@ -33,8 +33,34 @@ export class GearRatiosChallenge extends Challenge<GearPart[], number> {
     return !isStringANumber(representation) && representation !== '.';
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected computeAdvancedSolution(parsedContent: GearPart[]): number {
-    throw new Error('Method not implemented.');
+  protected computeAdvancedSolution(engineSchematic: GearPart[]): number {
+    const potentialGears = engineSchematic.filter(
+      (part) => part.getRepresentation() === '*',
+    );
+
+    const gears = potentialGears.filter((gear) =>
+      this.doesGearHaveTwoPartNumbers(gear),
+    );
+
+    return gears.reduce((sum, gear) => {
+      const partNumbers = gear
+        .getNeighbors()
+        .filter((neighbor) => isStringANumber(neighbor.getRepresentation()));
+
+      return (
+        sum +
+        parseInt(partNumbers[0].getRepresentation()) *
+          parseInt(partNumbers[1].getRepresentation())
+      );
+    }, 0);
+  }
+
+  private doesGearHaveTwoPartNumbers(gear: GearPart): boolean {
+    return (
+      gear
+        .getNeighbors()
+        .filter((neighbor) => isStringANumber(neighbor.getRepresentation()))
+        .length === 2
+    );
   }
 }

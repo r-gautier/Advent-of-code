@@ -74,6 +74,27 @@ describe('GearRatiosChallenge', () => {
       expect(result).toEqual(4361);
     });
   });
+
+  describe('advanced problem', () => {
+    it('should solve the challenge example', () => {
+      const input = generateMultipleRows([
+        '467..114..',
+        '...*......',
+        '..35..633.',
+        '......#...',
+        '617*......',
+        '.....+.58.',
+        '..592.....',
+        '......755.',
+        '...$.*....',
+        '.664.598..',
+      ]);
+
+      const result = gearRatiosChallenge.solveAdvanced(input);
+
+      expect(result).toEqual(467835);
+    });
+  });
 });
 
 function generateMultipleRows(rows: string[]): string {
