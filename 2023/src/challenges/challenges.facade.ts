@@ -6,6 +6,7 @@ import { Parser } from 'src/common/parsers/parser.interface';
 import { CubeConundrumChallenge } from './02-Cube_Conundrum/cubeConundrum.challenge';
 import { CubeConundrumParser } from './02-Cube_Conundrum/cubeConundrum.parser';
 import { Challenge } from './common/services/challenge.abstract';
+import { GearRatiosChallenge } from './03-Gear_Ratios/gearRatios.challenge';
 
 export type ChallengeDependency<T> = {
   challenge: DeprecatedChallenge<T, unknown>;
@@ -15,10 +16,11 @@ export type ChallengeDependency<T> = {
 @Injectable()
 export class ChallengesFacade {
   constructor(
+    private readonly singleColumnParser: SingleColumnParser,
     private readonly trebuchetService: TrebuchetChallenge,
     private readonly cubeConundrumService: CubeConundrumChallenge,
     private readonly cubeConundrumParser: CubeConundrumParser,
-    private readonly singleColumnParser: SingleColumnParser,
+    private readonly gearRatiosChallenge: GearRatiosChallenge,
   ) {}
 
   public solve(
@@ -37,6 +39,8 @@ export class ChallengesFacade {
 
   private buildChallenge(number: number): Challenge<unknown, number> {
     switch (number) {
+      case 3:
+        return this.gearRatiosChallenge;
       default:
         throw new Error('Challenge not implemented');
     }

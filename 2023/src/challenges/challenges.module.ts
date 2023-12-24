@@ -3,12 +3,14 @@ import { TrebuchetChallenge } from './01-Trebuchet/trebuchet.challenge';
 import { ChallengesFacade } from './challenges.facade';
 import { CubeConundrumChallenge } from './02-Cube_Conundrum/cubeConundrum.challenge';
 import { CubeConundrumParser } from './02-Cube_Conundrum/cubeConundrum.parser';
+import { GearRatiosChallenge } from './03-Gear_Ratios/gearRatios.challenge';
 
 @Module({
   providers: [
     TrebuchetChallenge,
     CubeConundrumChallenge,
     CubeConundrumParser,
+    GearRatiosChallenge,
     ChallengesFacade,
   ],
   exports: [ChallengesFacade],
