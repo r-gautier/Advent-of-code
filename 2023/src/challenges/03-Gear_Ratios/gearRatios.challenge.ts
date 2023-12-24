@@ -1,46 +1,40 @@
-import { SingleColumnParser } from 'src/common/parsers/singleColumn.parser';
 import { Challenge } from '../common/services/challenge.abstract';
 import { Injectable } from '@nestjs/common';
 import { isStringANumber } from 'src/common/utils/isStringANumber';
+import { GearRatiosParser } from './gearRatios.parser';
+import { GearPart } from './gearPart';
 
 @Injectable()
-export class GearRatiosChallenge extends Challenge<string[], number> {
-  constructor(parser: SingleColumnParser) {
+export class GearRatiosChallenge extends Challenge<GearPart[], number> {
+  constructor(parser: GearRatiosParser) {
     super(parser);
   }
 
-  protected computeBasicSolution(parsedContent: string[]): number {
-    if (parsedContent.length === 0) {
-      return 0;
-    }
+  protected computeBasicSolution(engineSchematic: GearPart[]): number {
+    const potentialPartNumbers = engineSchematic.filter((part) =>
+      isStringANumber(part.getRepresentation()),
+    );
 
-    const line = parsedContent[0];
+    const partNumbers = potentialPartNumbers.filter((part) =>
+      this.isPartNearASymbol(part),
+    );
 
-    let result = 0;
-    line.split('').forEach((char, index) => {
-      if (!isStringANumber(char)) {
-        return;
-      }
-
-      if (
-        !this.isCharASymbol(line[index - 1]) &&
-        !this.isCharASymbol(line[index + 1])
-      ) {
-        return;
-      }
-
-      result += parseInt(char);
-    });
-
-    return result;
+    return partNumbers.reduce((sum, part) => {
+      return sum + parseInt(part.getRepresentation());
+    }, 0);
   }
 
-  private isCharASymbol(char: string): boolean {
-    return char !== undefined && char !== '.' && !isStringANumber(char);
+  private isPartNearASymbol(part: GearPart): boolean {
+    return part.getNeighbors().some((neighbor) => this.isPartASymbol(neighbor));
+  }
+
+  private isPartASymbol(part: GearPart): boolean {
+    const representation = part.getRepresentation();
+    return !isStringANumber(representation) && representation !== '.';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected computeAdvancedSolution(parsedContent: string[]): number {
+  protected computeAdvancedSolution(parsedContent: GearPart[]): number {
     throw new Error('Method not implemented.');
   }
 }
