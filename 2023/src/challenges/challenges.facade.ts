@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { TrebuchetChallenge } from './01-Trebuchet/trebuchet.challenge';
 import { SingleColumnParser } from 'src/common/parsers/singleColumn.parser';
-import { Challenge } from './common/interfaces/challenge.interface';
+import { DeprecatedChallenge } from './common/interfaces/challenge.interface';
 import { Parser } from 'src/common/parsers/parser.interface';
 import { CubeConundrumChallenge } from './02-Cube_Conundrum/cubeConundrum.challenge';
 import { CubeConundrumParser } from './02-Cube_Conundrum/cubeConundrum.parser';
+import { Challenge } from './common/services/challenge.abstract';
 
 export type ChallengeDependency<T> = {
-  challenge: Challenge<T, unknown>;
+  challenge: DeprecatedChallenge<T, unknown>;
   parser: Parser<T>;
 };
 
@@ -24,6 +25,28 @@ export class ChallengesFacade {
     { number, isAdvanced }: { number: number; isAdvanced: boolean },
     content: string,
   ): unknown {
+    if (number <= 2) {
+      return this.handleDeprecatedChallenge({ number, isAdvanced }, content);
+    }
+
+    const challenge = this.buildChallenge(number);
+    return isAdvanced
+      ? challenge.solveAdvanced(content)
+      : challenge.solve(content);
+  }
+
+  private buildChallenge(number: number): Challenge<unknown, number> {
+    switch (number) {
+      default:
+        throw new Error('Challenge not implemented');
+    }
+  }
+
+  /** @deprecated */
+  private handleDeprecatedChallenge(
+    { number, isAdvanced }: { number: number; isAdvanced: boolean },
+    content: string,
+  ) {
     const { challenge, parser } = this.buildChallengeDependency(number);
 
     const parsedContent = parser.parse(content);

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { getEnumKeys } from 'src/common/utils/getEnumKeys';
 import { reverseString } from 'src/common/utils/reverseString';
-import { Challenge } from '../common/interfaces/challenge.interface';
+import { DeprecatedChallenge } from '../common/interfaces/challenge.interface';
 
 enum SpelledDigit {
   one = 1,
@@ -19,7 +19,9 @@ const DIGIT_REGEX_PATTERN = '\\d';
 const SPELLED_DIGIT_REGEX_PATTERN = getEnumKeys(SpelledDigit).join('|');
 
 @Injectable()
-export class TrebuchetChallenge implements Challenge<string[], number> {
+export class TrebuchetChallenge
+  implements DeprecatedChallenge<string[], number>
+{
   public solve(document: string[]): number {
     return document.reduce((result, line) => {
       const firstDigit = this.findFirstDigit(line);

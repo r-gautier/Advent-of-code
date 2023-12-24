@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Challenge } from '../common/interfaces/challenge.interface';
+import { DeprecatedChallenge } from '../common/interfaces/challenge.interface';
 
 export type Game = {
   id: number;
@@ -21,7 +21,9 @@ const CUBE_LIMITS: Record<CubeColor, number> = {
 };
 
 @Injectable()
-export class CubeConundrumChallenge implements Challenge<Game[], number> {
+export class CubeConundrumChallenge
+  implements DeprecatedChallenge<Game[], number>
+{
   public solve(games: Game[]): number {
     return games.reduce((result, game) => {
       const gameContribution = this.isValidGame(game) ? game.id : 0;
